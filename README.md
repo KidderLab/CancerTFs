@@ -1,6 +1,6 @@
 # CancerTFs
 
-## CellNet setup file (script_setupCellNet.R)
+# CellNet setup file (script_setupCellNet.R)
 
 # Set your library path so that it points to the correct platform and annotation libraries
 
@@ -27,7 +27,7 @@ source( paste(mydir, "CellNet_sourceme.R", sep='') );
 utils_sourceRs(mydir);
 
 
-## CellNet main script (script_maincellnetr.R)
+# CellNet main script (script_maincellnetr.R)
 
 source("script_setupCellNet.R")
 
@@ -48,7 +48,7 @@ library(affy);
 cat("# Reading all Cel files ...\n")
 expAll<-Norm_cleanPropRaw(stAll, "hgu133plus2")
 
-## select samples for GRN reconstruction
+# select samples for GRN reconstruction
 
 cat("# Creating stGRN ...\n")
 stGRN<-sample_profiles_grn(stAll, minNum=84);
@@ -75,7 +75,7 @@ fname<-paste(“cnProc_",fileName, mydate, ".R", sep='');
 save(cnProc, file=fname);
 
 
-## Rainbow plot (script_cellnet_rainbowPlot.R)
+# Rainbow plot (script_cellnet_rainbowPlot.R)
 
 source("script_setupCellNet.R")
 
@@ -144,20 +144,20 @@ stAll <- utils_loadObject(paste("stQuery",filename,".R",sep=""))
 
 library(affy);
 
-## load expall
+# load expall
 load(paste("expAll_",filename, mydate,".R",sep=""));
 expProp <- expAll
 
-## load stGRN
+# load stGRN
 load(paste(“stGRN_",filename, mydate,".R",sep=""));
 
-## load expGRN
+# load expGRN
 load(paste("expGRN_",filename, mydate,".R",sep=""));
 
-## load tfs
+# load tfs
 load(paste("tfs_",filename, mydate,".R",sep=""));
 
-## load corrx htd zscs
+# load corrx htd zscs
 load(paste("tmpforctGRN_",filename, mydate,".rda",sep=""));
 
 zthresh<-6;
