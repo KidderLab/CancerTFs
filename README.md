@@ -2,32 +2,32 @@
 
 **CellNet setup file (script_setupCellNet.R)**
 
-# Set your library path so that it points to the correct platform and annotation libraries
+**Set your library path so that it points to the correct platform and annotation libraries**
 
 .libPaths("~/myprog/cellnetr/packages")
 library("cellnetr")
 
-# human
+**human**
 library("org.Hs.eg.db")
 
-# hgu133plus2
+**hgu133plus2**
 library("hgu133plus2.db");
 library("hgu133plus2cdf");
 
-# set up path for the CellNet objects containing the classifiers, GRNs.
+**set up path for the CellNet objects containing the classifiers, GRNs**
 path_CN_obj<-"~/myprog/cellnetr/training_data/";
 
-# change to reflect your platform
+**change to reflect your platform**
 myPlatform<-"hgu133plus2"
 
 mydir<-"~/myprog/cellnetr/final_cellnet/CellNet-master/"
 source( paste(mydir, "CellNet_sourceme.R", sep='') );
 
-# this sources all of my R files
+**this sources all of R files**
 utils_sourceRs(mydir);
 
 
-# CellNet main script (script_maincellnetr.R)
+**CellNet main script (script_maincellnetr.R)**
 
 source("script_setupCellNet.R")
 
@@ -42,13 +42,13 @@ stQuery<-geo_fixNames(stQuery);
 stAll<-utils_loadObject(paste("stQuery_",fileName,".R",sep=""));
 
 
-# THIS WILL LOAD THE CEL FILES and make raw gene expression measurements. 
+**THIS WILL LOAD THE CEL FILES and make raw gene expression measurements**
 
 library(affy);
 cat("# Reading all Cel files ...\n")
 expAll<-Norm_cleanPropRaw(stAll, "hgu133plus2")
 
-# select samples for GRN reconstruction
+**select samples for GRN reconstruction**
 
 cat("# Creating stGRN ...\n")
 stGRN<-sample_profiles_grn(stAll, minNum=84);
@@ -60,7 +60,7 @@ expGRN<-Norm_quantNorm(expR);
 #Determine latest TR annotation
 hTFs<-find_tfs("Hs");
 
-# Correlations and Zscores for GRN
+**Correlations and Zscores for GRN**
 corrX<-grn_corr_round(expGRN);
 hTFs<-intersect(hTFs, rownames(expGRN));
 zscs<-grn_zscores(corrX, hTFs);
@@ -69,13 +69,13 @@ zthresh<-6; # EMPIRICALLY DETERMINED by comparison to 3 GOLD STANDARDS.
 
 ctGRNs<-cn_grnDoRock(stGRN, expGRN, zscs, corrX, "general", dLevelGK="description6", zThresh=zthresh);
 
-# Make the complete CellNet object using all data.
+**Make the complete CellNet object using all data**
 cnProc<-cn_make_processor(expAll, stAll, ctGRNs, dLevel="description1", classWeight=TRUE, exprWeight=TRUE);
 fname<-paste(“cnProc_",fileName, mydate, ".R", sep='');
 save(cnProc, file=fname);
 
 
-# Rainbow plot (script_cellnet_rainbowPlot.R)
+**Rainbow plot (script_cellnet_rainbowPlot.R)**
 
 source("script_setupCellNet.R")
 
@@ -110,10 +110,10 @@ pdf(paste(outputfileName,".pdf",sep=""))
 
 cn_hmClass(tmpAns,isBig = TRUE);
 
-# Gene regulatory network status of starting cell type (esc) GRN\
+**Gene regulatory network status of starting cell type (esc) GRN**
 cn_barplot_grnSing(tmpAns, cnProc, targetCT, c(targetCT), bOrder=NULL);
 
-# Network influence score of HSPC GRN transcriptional regulators.
+**Network influence score of HSPC GRN transcriptional regulators**
 cn_plotnis(tfScores[[targetCT]], limit=15);
 
   scoresDF<-tfScores[[targetCT]]
@@ -128,7 +128,7 @@ plot(mp_rainbowPlot(cnProc[['expTrain']],cnProc[['stTrain']],topTF[i], dLevel="d
 dev.off()
 
 
-# GRN_ROCS (script_cellnet_grn_rocs.sh)
+**GRN_ROCS (script_cellnet_grn_rocs.sh)**
 
 source("script_setupCellNet.R")
 
@@ -144,34 +144,34 @@ stAll <- utils_loadObject(paste("stQuery",filename,".R",sep=""))
 
 library(affy);
 
-# load expall
+**load expall**
 load(paste("expAll_",filename, mydate,".R",sep=""));
 expProp <- expAll
 
-# load stGRN
+**load stGRN**
 load(paste(“stGRN_",filename, mydate,".R",sep=""));
 
-# load expGRN
+**load expGRN**
 load(paste("expGRN_",filename, mydate,".R",sep=""));
 
-# load tfs
+**load tfs**
 load(paste("tfs_",filename, mydate,".R",sep=""));
 
-# load corrx htd zscs
+**load corrx htd zscs**
 load(paste("tmpforctGRN_",filename, mydate,".rda",sep=""));
 
 zthresh<-6;
 
 load(paste("ctGRNs_",filename, mydate,".R",sep=""));
 
-# Grn report
+**Grn report**
 grn_report(ctGRNs);
 fname<-paste("GRN_report_",filename,".pdf", sep='');
 ggsave(file=fname, width=8.5, height=11);
 dev.copy(pdf, file=fname, width=8.5, height=11);
 dev.off()
 
-# select classification training and validation data
+**select classification training and validation data**
 stList<-samp_for_class(stAll, prop=0.5, dLevel="description1")
 lapply(stList, nrow)
 stVal<-stList[['stVal']];
