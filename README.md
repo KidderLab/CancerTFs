@@ -1,6 +1,6 @@
 # CancerTFs
 
-** CellNet setup file (script_setupCellNet.R) **
+**CellNet setup file (script_setupCellNet.R)**
 
 # Set your library path so that it points to the correct platform and annotation libraries
 
