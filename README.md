@@ -128,7 +128,7 @@ plot(mp_rainbowPlot(cnProc[['expTrain']],cnProc[['stTrain']],topTF[i], dLevel="d
 dev.off()
 
 
-## GRN_ROCS (script_cellnet_grn_rocs.sh)
+# GRN_ROCS (script_cellnet_grn_rocs.sh)
 
 source("script_setupCellNet.R")
 
